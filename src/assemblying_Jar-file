@@ -1,0 +1,4 @@
+1. go inside the source directory which contains the project(files and packages)
+2. add the MANIFEST.MF file to this directory.
+3. (Example of jar command): jar cvfm <Jar-file_name> MANIFEST.MF . (compilation for the current directory)
+4. java -jar <Jar-file_name>

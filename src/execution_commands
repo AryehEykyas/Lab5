@@ -1,0 +1,2 @@
+javac -sourcepath src -d bin -classpath <Jar_file_location src/.../Main.java
+java -classpath bin;<Jar-file_location> src. ... .Main
