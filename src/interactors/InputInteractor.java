@@ -7,7 +7,9 @@ import exceptions.NonExistentCommandException;
 import exceptions.WorkerCompleteInputException;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
+import java.util.regex.Pattern;
 
 /**
  * Class that is used for processing the input.
@@ -443,49 +445,51 @@ public class InputInteractor
      * @param data like a description.
      * @return LocalDateTime input date. (can't be null)
      */
-    public LocalDateTime getDate(String data) throws WorkerCompleteInputException, InputCompleteException
-    {
+    public LocalDateTime getDate(String data) throws WorkerCompleteInputException, InputCompleteException {
         String s = "";
         console.print(data);
-        while (console.hasNext())
-        {
-            try
-            {
+        while (console.hasNext()) {
+            try {
                 s = console.getNextStr();
-                if (s.equals(completeExecution))
-                {
+                if (s.equals(completeExecution)) {
                     throw new WorkerCompleteInputException();
                 }
-                if (s.equals(""))
-                {
+                if (s.equals("")) {
                     throw new NullPointerException();
                 }
-                try
+                else
                 {
-                    return LocalDateTime.parse(s);
-                /*
-                DateTimeFormatter formater = DateTimeFormater .ofPattern("yyyy-MM-dd HH:mm");
-                return LocalDateTime.parse(s, formatter);
+                    Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}");
 
-                 */
+                    //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-ddTHH:mm");
+                    //boolean check = formatter.equals(s);
+
+                    /*
+                    Pattern pattern = Pattern.compile("\\d[0-9]{4}\\d}")
+                    if (pattern.matcher(s).matches()) {
+                        return LocalDateTime.parse(s);
+                    } else {
+                        throw new IncorrectTimeFormat();
+                    }
+                    */
+
+                    if (pattern.matcher(s).matches())
+                    {
+                        return LocalDateTime.parse(s);
+                    }
                 }
-                catch (IllegalArgumentException e)
-                {
-                    console.print(data);
-                }
-                catch (NullPointerException e)
-                {
-                    console.print(e.toString());
-                }
-                console.print(data);
             }
             catch (WorkerCompleteInputException e)
             {
                 console.print(e.toString());
             }
-            catch (NumberFormatException e)
+            catch (NullPointerException e)
             {
-                console.print("Incorrect input Date format.");
+                console.print("Incorrect input date format.");
+            }
+            catch (DateTimeParseException e)
+            {
+                console.print(e.toString());
             }
 
             console.print(data);
@@ -502,40 +506,32 @@ public class InputInteractor
      * @param notNull true - can't be null, false - can.
      * @return @return Double entered number (can't be null)
      */
-    public String getNotBlankString(String data, int min, boolean notNull) throws WorkerCompleteInputException, InputCompleteException
+    public String getNotBlankString (String data,int min, boolean notNull) throws WorkerCompleteInputException, InputCompleteException
     {
         String s = "";
         console.print(data);
         while (console.hasNext())
         {
-            try
-            {
+            try {
                 s = console.getNextStr();
-                if (s.equals(completeExecution))
-                {
+                if (s.equals(completeExecution)) {
                     throw new WorkerCompleteInputException();
                 }
-                if (!notNull && s.equals(""))
-                {
+                if (!notNull && s.equals("")) {
                     return null;
                 }
-                if (notNull && s.equals(""))
-                {
+                if (notNull && s.equals("")) {
                     throw new NullPointerException();
                 }
-                if (!s.isBlank() && s.length() >= min)
-                {
+                if (!s.isBlank() && s.length() >= min) {
                     return s;
                 }
 
                 console.print(data);
             }
-            catch (WorkerCompleteInputException e)
-            {
+            catch (WorkerCompleteInputException e) {
                 console.print(e.toString());
-            }
-            catch (NullPointerException e)
-            {
+            } catch (NullPointerException e) {
                 console.print("Incorrect input string format.");
             }
 

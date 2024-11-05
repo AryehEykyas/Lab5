@@ -24,7 +24,7 @@ public class Info extends Command
     {
         try
         {
-            if (args.length == 0)
+            if (args.length != 0)
             {
                 throw new IncorrectCmdArgsException();
             }

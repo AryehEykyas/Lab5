@@ -41,25 +41,31 @@ public class ExecuteScript extends Command
      */
     public void command(String[] args)
     {
-        try
+        boolean flag = true;
+        while (flag)
         {
-            argsValidation(args);
-            String fileName = args[0];
-            if (counter > max)
+            try
             {
-                console.print("The max line depth was reached.");
-                return;
+                argsValidation(args);
+                flag = false;
+                String fileName = args[0];
+                FileAccessInteractor.checkAccess(fileName);
+                if (counter > max)
+                {
+                    console.print("The max line depth was reached.");
+                    return;
+                }
+                console.print("Executing file consisting of the commands.");
+                counter++;
+                Console fileConsole = new FileConsoleInteractor(fileName);
+                InputInteractor inputInteractor = new InputInteractor(fileConsole, collectionInteractor, fileName);
+                inputInteractor.start();
+                counter--;
             }
-            console.print("Executing file consisting of the commands.");
-            counter++;
-            Console fileConsole = new FileConsoleInteractor(fileName);
-            InputInteractor inputInteractor = new InputInteractor(fileConsole, collectionInteractor, fileName);
-            inputInteractor.start();
-            counter--;
-        }
-        catch (IncorrectCmdArgsException e)
-        {
-            console.print(e.toString());
+            catch (IncorrectCmdArgsException e)
+            {
+                console.print("Incorrect arguments are passed.");
+            }
         }
     }
 }

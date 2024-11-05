@@ -93,10 +93,12 @@ public class CommandInteractor
             catch (WorkerCompleteInputException | InputCompleteException e)
             {
                 console.print(e.toString());
+                return;
             }
             catch (IncorrectCmdArgsException e)
             {
-                throw new RuntimeException(e);
+                console.print("Incorrect args exception");
+                return;
             }
         }
         cmd.command(args);

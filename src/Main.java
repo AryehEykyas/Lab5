@@ -13,6 +13,7 @@ public class Main
             System.exit(0);
         }
         String fileName = args[0];
+        FileAccessInteractor.checkAccess(fileName);
 
         LinkedList<Worker> workerList = JsonInteractor.getLinkedListOfWorkerFromStrJson(FileInteractor.readTextFromFile(fileName));
         ConsoleInteractor consoleInteractor = new ConsoleInteractor();
